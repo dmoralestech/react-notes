@@ -99,4 +99,4 @@ const res = todoApp2([{
 }], action);
 
 console.log('res', res)
-```code
+```

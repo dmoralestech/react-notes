@@ -328,3 +328,97 @@ const TodoApp = ({
   );
 }
 ```
+```
+const Footer = () => (
+  <p>
+    Show:
+    {' '}
+    <FilterLink
+      filter='SHOW_ALL'
+    >
+      All
+    </FilterLink>
+    {', '}
+    <FilterLink
+      filter='SHOW_ACTIVE'
+    >
+      Active
+    </FilterLink>
+    {', '}
+    <FilterLink
+      filter='SHOW_COMPLETED'
+    >
+      Completed
+    </FilterLink>
+  </p>
+)
+```
+```
+const Link = ({
+  active,
+  children,
+  onClick
+}) => {
+  if (active) {
+    return <span>{children}</span>
+  }
+
+  return (
+    <a href='#'
+      onClick={e => {
+        e.preventDefault();
+        onClick();
+      }}
+    >
+      {children}
+    </a>
+  );
+};
+```
+
+```
+class FilterLink extends Component {
+  render () {
+    const props = this.props;
+    // this just reads the store, is not listening
+    // for change messages from the store updating
+    const state = store.getState();
+
+    return (
+      <Link
+        active={
+          props.filter ===
+          state.visibilityFilter
+        }
+        onClick={() =>
+          store.dispatch({
+            type: 'SET_VISIBILITY_FILTER',
+            filter: props.filter
+          })
+        }
+      >
+        {props.children}
+      </Link>
+    );
+  }
+}
+```
+
+
+```
+class FilterLink extends Component {
+  componentDidMount() {
+    this.unsubscribe = store.subscribe(() =>
+      this.forceUpdate()
+    );
+  }
+
+  // Since the subscription happens in `componentDidMount`,
+  // it's important to unsubscribe in `componentWillUnmount`.
+  componentWillUnmount() {
+    this.unsubscribe(); // return value of `store.subscribe()`
+  }
+.
+. // `render()` method as above...
+.
+```

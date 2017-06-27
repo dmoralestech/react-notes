@@ -27,3 +27,11 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
     }
 })
 ```
+concise method notation
+```
+const mapDispatchToProps = (dispatch, ownProps) => ({
+    onClick() {
+      dispatch(setVisibilityFilter(ownProps.filter))
+    }
+})
+```
